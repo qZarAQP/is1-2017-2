@@ -2,7 +2,19 @@ package domain;
 
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+@Entity
 public class Curso implements BaseEntity<Long> {
+	@Id
+	@SequenceGenerator(name = "curso_id_generator", sequenceName = "curso_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "curso_id_generator")
 	private Long id;
 
 	private String codigo;
@@ -11,7 +23,12 @@ public class Curso implements BaseEntity<Long> {
 
 	private Integer creditos;
 
+	@OneToMany(mappedBy = "cursoSucesor", fetch = FetchType.LAZY)
 	private List<Curso> prerequisitos;
+	//private List<Curso> prerequisitos;
+	
+	@ManyToOne
+	private Curso cursoSucesor;
 
 	@Override
 	public Long getId() {
